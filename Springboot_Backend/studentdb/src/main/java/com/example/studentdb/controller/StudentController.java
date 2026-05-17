@@ -1,7 +1,11 @@
 package com.example.studentdb.controller;
 
-import com.example.studentdb.Student;
+import com.example.studentdb.entity.Student;
 import com.example.studentdb.repository.StudentRepository;
+
+import jakarta.validation.Valid;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,13 +20,14 @@ public class StudentController {
         this.repository = repository;
     }
 
-    @PostMapping
-    public Student createStudent(@RequestBody Student student) {
-        return repository.save(student);
-    }
-
     @GetMapping
     public List<Student> getAllStudents() {
         return repository.findAll();
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Student createStudent(@Valid @RequestBody Student student) {
+        return repository.save(student);
     }
 }
