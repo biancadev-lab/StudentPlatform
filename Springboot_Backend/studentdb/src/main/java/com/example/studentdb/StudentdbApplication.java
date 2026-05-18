@@ -21,8 +21,7 @@ public class StudentdbApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
 
-        studentRepository.deleteAll();
-
+ if (studentRepository.count() == 0) {
 	
         Student student1 = new Student("Anna Becker", 101, 20);
         Student student2 = new Student("Julian Becker", 102, 22);
@@ -37,6 +36,9 @@ public class StudentdbApplication implements CommandLineRunner {
         studentRepository.save(student4);
         studentRepository.save(student5);
 
-        System.out.println("Students inserted into MongoDB!");
+        System.out.println("Seed data inserted");
+    } else {
+        System.out.println("Database already contains data");
     }
+ }
 }
