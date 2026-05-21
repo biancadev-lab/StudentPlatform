@@ -7,12 +7,19 @@ import { Student } from '../models/student';
   providedIn: 'root'
 })
 export class StudentService {
+  getStudentById(id: string): Observable<Student> {
+      return this.http.get<Student>(`${this.apiUrl}/${id}`);
+  }
 
-  private apiUrl = 'http://localhost:8080/students';
+  private apiUrl = 'http://localhost:8081/students';
 
   constructor(private http: HttpClient) {}
 
-  getStudents(): Observable<Student[]> {
+  getStudents(id: string): Observable<Student[]> {
     return this.http.get<Student[]>(this.apiUrl);
+  }
+
+  updateStudent(id: string, student: any): Observable<any> {
+    return this.http.put(`api/students/${id}`, student);
   }
 }

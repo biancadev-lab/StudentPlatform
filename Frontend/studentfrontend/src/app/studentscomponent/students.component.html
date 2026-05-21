@@ -1,7 +1,62 @@
-<h2>Students</h2>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+</style>
 
-<ul>
-  <li *ngFor="let s of students">
-    {{ s.name }} - Age: {{ s.age }} - Course: {{ s.courseId }}
-  </li>
-</ul>
+<div class="font-[Quicksand] p-6 overflow-x-auto pt-24">
+
+
+  <table class="min-w-full bg-white rounded-xl overflow-hidden shadow place-items-center">
+
+    <thead class="bg-black text-white">
+      <tr>
+        <th class="px-6 py-4 text-left">Name</th>
+        <th class="px-6 py-4 text-left">Age</th>
+        <th class="px-6 py-4 text-left">Courses by ID</th>
+        <th class="px-6 py-4 text-left">Edit</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <tr
+        *ngFor="let s of students"
+        class="border-b hover:bg-gray-100 transition"
+      >
+      <td class="px-6 py-4">
+      <div class="flex items-center gap-3">
+    
+      <img
+        src="/user.png"
+        alt="Profile"
+        class="w-8 h-8 object-contain"
+      />
+
+      <span>{{ s.name }}</span>
+
+      </div>
+      </td>
+
+        <td class="px-6 py-4">{{ s.age }}</td>
+
+        <td class="px-6 py-4">
+        <span *ngFor="let c of s.courseIds" class="inline-block bg-gray-200 px-2 py-1 mr-1 rounded">
+            {{ c }}
+        </span>
+        </td>
+
+        <td class="px-6 py-4">
+          <a [routerLink]="['/edit', s.id]">
+          <img
+            src="/edit.png"
+            alt="Edit"
+            class="w-8 h-8 object-contain cursor-pointer"
+          />
+          </a>
+      </td>
+
+      </tr>
+
+    </tbody>
+  </table>
+
+</div>

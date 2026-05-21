@@ -6,7 +6,6 @@ import com.example.studentdb.repository.StudentRepository;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +26,12 @@ public class StudentController {
         return repository.findAll();
     }
 
+    @GetMapping("/{id}")
+    public Student getStudentById(@PathVariable String id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found")); 
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Student createStudent(@Valid @RequestBody Student student) {
@@ -34,26 +39,28 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public Student updateStudent(@PathVariable String id,@Valid @RequestBody Student updatedStudent) {
+    public Student updateStudent(
+            @PathVariable String id,
+            @Valid @RequestBody Student updatedStudent) {
 
-    Student existingStudent = repository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Student not found"));
+        Student existingStudent = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
 
-    existingStudent.setName(updatedStudent.getName());
-    existingStudent.setAge(updatedStudent.getAge());
-    existingStudent.setCourseId(updatedStudent.getCourseId());
-    // add other fields here
+        existingStudent.setName(updatedStudent.getName());
+        existingStudent.setAge(updatedStudent.getAge());
 
-    return repository.save(existingStudent);
-}
+        existingStudent.setCourseIds(updatedStudent.getCourseIds());
+
+        return repository.save(existingStudent);
+    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteStudent(@PathVariable String id) {
 
-    Student existingStudent = repository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Student not found"));
+        Student existingStudent = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
 
-    repository.delete(existingStudent);
-}
+        repository.delete(existingStudent);
+    }
 }

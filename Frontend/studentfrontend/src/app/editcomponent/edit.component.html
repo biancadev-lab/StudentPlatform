@@ -1,0 +1,84 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+</style>
+
+<div class="flex items-center justify-center bg-gray-50 font-[Quicksand] pt-24 px-8">
+
+  <!-- Card -->
+  <div class="w-full max-w-xl bg-white shadow-xl rounded-2xl p-8">
+
+    <!-- Header -->
+    <div class="mb-6">
+      <h2 class="text-2xl font-bold text-gray-800">Edit Student</h2>
+      <p class="text-sm text-gray-500">Update student details below</p>
+    </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="saveStudent()" class="space-y-5">
+
+      <!-- Name -->
+      <div>
+        <label class="text-sm text-gray-600">Name</label>
+        <input
+          type="text"
+          name="name"
+          [(ngModel)]="student.name"
+          class="w-full mt-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
+          placeholder="Enter name"
+        />
+      </div>
+
+      <!-- Age -->
+      <div>
+        <label class="text-sm text-gray-600">Age</label>
+        <input
+          type="number"
+          name="age"
+          [(ngModel)]="student.age"
+          class="w-full mt-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
+          placeholder="Enter age"
+        />
+      </div>
+
+      <!-- Course IDs -->
+      <div>
+        <label class="text-sm text-gray-600">Course IDs</label>
+        <input
+          type="text"
+          name="courseIds"
+          [(ngModel)]="courseInput"
+          class="w-full mt-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
+          placeholder="e.g. 101, 102, 103"
+        />
+
+        <p class="text-xs text-gray-400 mt-1">
+          Separate multiple course IDs with commas
+        </p>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-between pt-4">
+
+        <button
+          type="button"
+          (click)="cancel()"
+          class="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
+        >
+          Cancel
+        </button>
+
+        <a [routerLink]="['/students']">
+        <button
+          type="submit"
+          class="px-5 py-2 rounded-lg bg-black text-white hover:bg-gray-800 transition"
+        >
+          Save Changes
+        </button>
+        </a>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

@@ -3,6 +3,9 @@ package com.example.studentdb.entity;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,16 +21,15 @@ public class Student {
     @Min(value = 1, message = "Age must be greater than 0")
     private int age;
 
-    @Min(value = 1, message = "CourseId must be greater than 0")
-    private int courseId;
+    // N-to-M relationship (Student → Courses)
+    private List<String> courseIds = new ArrayList<>();
 
-    public Student() {
-    }
+    public Student() {}
 
-    public Student(String name, int courseId, int age) {
+    public Student(String name, int age, List<String> courseIds) {
         this.name = name;
-        this.courseId = courseId;
         this.age = age;
+        this.courseIds = courseIds;
     }
 
     public String getId() {
@@ -38,12 +40,12 @@ public class Student {
         return name;
     }
 
-    public int getCourseId() {
-        return courseId;
-    }
-
     public int getAge() {
         return age;
+    }
+
+    public List<String> getCourseIds() {
+        return courseIds;
     }
 
     public void setId(String id) {
@@ -54,11 +56,11 @@ public class Student {
         this.name = name;
     }
 
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
-    }
-
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public void setCourseIds(List<String> courseIds) {
+        this.courseIds = courseIds;
     }
 }
