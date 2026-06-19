@@ -1,65 +1,84 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Observable } from 'rxjs';
-
+import { ChangeDetectorRef } from '@angular/core';
 import { StudentService } from '../services/student.service';
 import { Student } from '../models/student';
 
 @Component({
   selector: 'app-edit',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './edit.component.html'
 })
 export class EditComponent implements OnInit {
 
-  student: Student = {
-    name: '',
-    age: 0,
-    courseIds: []
-  };
+student: Student | null = null;
 
   courseInput: string = '';
+  loading = true;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private service: StudentService
-  ) {}
-
-  saveStudent(): void {
-  this.student.courseIds = this.courseInput
-    .split(',')
-    .map((c: string) => c.trim())
-    .filter((c: string) => c.length > 0);
-
-    if (!this.student.id) {
-    console.error("Student ID is missing!");
-    return;
-    }
-
-    this.service.updateStudent(this.student.id, this.student)
-    .subscribe(() => {
-    alert('Student updated successfully');
-    });
-}   
+    private service: StudentService,
+    private cdr: ChangeDetectorRef
+  ) {  console.log("EDIT COMPONENT CREATED");}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
 
-    if (id) {
-      this.service.getStudentById(id).subscribe((data: Student) => {
-        this.student = data;
+  console.log("NGONINIT RUN");
 
-        // pre-fill input
-        this.courseInput = data.courseIds?.join(', ') || '';
-      });
+  const id = this.route.snapshot.paramMap.get('id');
+
+  if (!id) return;
+
+  this.service.getStudentById(id).subscribe((data: Student) => {
+
+    console.log("LOADED:", data);
+
+    this.student = data;
+
+    this.courseInput = (data.courseIds ?? []).join(', ');
+
+    this.loading = false;
+
+    this.cdr.detectChanges();
+  });
+}
+
+saveStudent(): void {
+  if (!this.student?.id) return;
+
+  const updatedStudent: Student = {
+    ...this.student,
+    courseIds: this.courseInput
+      .split(',')
+      .map(c => c.trim())
+      .filter(Boolean)
+  };
+
+  console.log(updatedStudent);
+
+  this.service.updateStudent(this.student.id, updatedStudent).subscribe({
+    next: () => {
+      // 1. Tell the service that data has changed
+      this.service.triggerRefresh(); 
+      
+      // 2. Use Angular Router to navigate back smoothly without a hard refresh
+      this.router.navigate(['/students']);
+      this.cdr.detectChanges();
+    },
+    error: (err) => {
+      console.error('Failed to update student:', err);
     }
-  }
+  });
+}
 
   cancel(): void {
     this.router.navigate(['/students']);
   }
+
+  
 }

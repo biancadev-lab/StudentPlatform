@@ -1,9 +1,16 @@
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght=300..700&display=swap');
 </style>
 
-<div class="font-[Quicksand] p-6 overflow-x-auto pt-24">
+<div *ngIf="students$ | async as studentsList">
+  <pre>{{ studentsList | json }}</pre>
 
+  <div *ngFor="let student of studentsList">
+    <p>{{ student.name }}</p>
+  </div>
+</div>
+
+<div class="font-[Quicksand] p-6 overflow-x-auto pt-24">
 
   <table class="min-w-full bg-white rounded-xl overflow-hidden shadow place-items-center">
 
@@ -13,46 +20,55 @@
         <th class="px-6 py-4 text-left">Age</th>
         <th class="px-6 py-4 text-left">Courses by ID</th>
         <th class="px-6 py-4 text-left">Edit</th>
-      </tr>
+        <th class="px-6 py-4 text-left">Delete</th> </tr>
     </thead>
 
     <tbody>
 
       <tr
-        *ngFor="let s of students"
-        class="border-b hover:bg-gray-100 transition"
+      *ngFor="let student of students; trackBy: trackByStudentId"
+      class="border-b hover:bg-gray-100 transition"
       >
-      <td class="px-6 py-4">
-      <div class="flex items-center gap-3">
-    
-      <img
-        src="/user.png"
-        alt="Profile"
-        class="w-8 h-8 object-contain"
-      />
+        <td class="px-6 py-4">
+          <div class="flex items-center gap-3">
+            <img
+              src="/user.png"
+              alt="Profile"
+              class="w-8 h-8 object-contain"
+            />
+            <span>{{ student.name }}</span>
+          </div>
+        </td>
 
-      <span>{{ s.name }}</span>
-
-      </div>
-      </td>
-
-        <td class="px-6 py-4">{{ s.age }}</td>
+        <td class="px-6 py-4">{{ student.age }}</td>
 
         <td class="px-6 py-4">
-        <span *ngFor="let c of s.courseIds" class="inline-block bg-gray-200 px-2 py-1 mr-1 rounded">
-            {{ c }}
-        </span>
+          <span *ngFor="let c of student.courseIds" class="inline-block bg-gray-200 px-2 py-1 mr-1 rounded">
+              {{ c }}
+          </span>
         </td>
 
         <td class="px-6 py-4">
-          <a [routerLink]="['/edit', s.id]">
-          <img
-            src="/edit.png"
-            alt="Edit"
-            class="w-8 h-8 object-contain cursor-pointer"
-          />
+          <a [routerLink]="['/edit', student.id]">
+            <img
+              src="/edit.png"
+              alt="Edit"
+              class="w-8 h-8 object-contain cursor-pointer"
+            />
           </a>
-      </td>
+        </td>
+
+        <td class="px-6 py-4">
+          <button (click)="deleteStudent(student.id)" class="focus:outline-none alignment-middle">
+            <span class="text-xl text-red-500 hover:text-red-700 cursor-pointer">
+              <img
+              src="/delete.png"
+              alt="Delete"
+              class="w-6 h-6 object-contain cursor-pointer"
+            />
+            </span>
+          </button>
+        </td>
 
       </tr>
 

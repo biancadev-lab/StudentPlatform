@@ -1,84 +1,95 @@
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght=300..700&display=swap');
 </style>
 
 <div class="flex items-center justify-center bg-gray-50 font-[Quicksand] pt-24 px-8">
 
-  <!-- Card -->
   <div class="w-full max-w-xl bg-white shadow-xl rounded-2xl p-8">
 
-    <!-- Header -->
     <div class="mb-6">
-      <h2 class="text-2xl font-bold text-gray-800">Edit Student</h2>
-      <p class="text-sm text-gray-500">Update student details below</p>
+      <h2 class="text-2xl font-bold text-gray-800">Edit Student Info</h2>
     </div>
 
-    <!-- Form -->
-    <form (ngSubmit)="saveStudent()" class="space-y-5">
+    <div *ngIf="student as s">
+      <form #editForm="ngForm" (ngSubmit)="editForm.form.valid && saveStudent()" class="space-y-5" novalidate>
 
-      <!-- Name -->
-      <div>
-        <label class="text-sm text-gray-600">Name</label>
-        <input
-          type="text"
-          name="name"
-          [(ngModel)]="student.name"
-          class="w-full mt-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
-          placeholder="Enter name"
-        />
-      </div>
+        <div>
+          <label class="text-sm text-gray-600">Name</label>
+          <input
+            type="text"
+            name="name"
+            #nameModel="ngModel"
+            [(ngModel)]="s.name"
+            class="w-full mt-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
+            [ngClass]="{'border-red-500 focus:ring-red-200': nameModel.invalid && nameModel.touched}"
+            placeholder="Enter name"
+            required
+            minlength="2"
+          />
+          <div *ngIf="nameModel.invalid && nameModel.touched" class="text-red-500 text-xs mt-1">
+            <span *ngIf="nameModel.errors?.['required']">Name is required.</span>
+            <span *ngIf="nameModel.errors?.['minlength']">Name must be at least 2 characters long.</span>
+          </div>
+        </div>
 
-      <!-- Age -->
-      <div>
-        <label class="text-sm text-gray-600">Age</label>
-        <input
-          type="number"
-          name="age"
-          [(ngModel)]="student.age"
-          class="w-full mt-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
-          placeholder="Enter age"
-        />
-      </div>
+        <div>
+          <label class="text-sm text-gray-600">Age</label>
+          <input
+            type="number"
+            name="age"
+            #ageModel="ngModel"
+            [(ngModel)]="s.age"
+            class="w-full mt-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
+            [ngClass]="{'border-red-500 focus:ring-red-200': ageModel.invalid && ageModel.touched}"
+            placeholder="Enter age"
+            required
+            min="1"
+            max="120"
+          />
+          <div *ngIf="ageModel.invalid && ageModel.touched" class="text-red-500 text-xs mt-1">
+            <span *ngIf="ageModel.errors?.['required']">Age is required.</span>
+            <span *ngIf="ageModel.errors?.['min'] || ageModel.errors?.['max']">Age must be between 1 and 120.</span>
+          </div>
+        </div>
+        
+    <div>
+    <label class="text-sm text-gray-600">Course IDs</label>
+    <input
+        type="text"
+        name="courseInput"
+        #courseModel="ngModel"
+        [(ngModel)]="courseInput"
+        class="w-full mt-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
+        [ngClass]="{'border-red-500 focus:ring-red-200': courseModel.invalid && courseModel.touched}"
+        placeholder="e.g. 101, 102, 103"
+        required
+    />
+    
+    <div *ngIf="courseModel.invalid && courseModel.touched" class="text-red-500 text-xs mt-1">
+        <span>Course IDs are required.</span>
+    </div>
+    </div>
 
-      <!-- Course IDs -->
-      <div>
-        <label class="text-sm text-gray-600">Course IDs</label>
-        <input
-          type="text"
-          name="courseIds"
-          [(ngModel)]="courseInput"
-          class="w-full mt-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
-          placeholder="e.g. 101, 102, 103"
-        />
+        <div class="flex justify-between pt-4">
+          <button
+            type="button"
+            (click)="cancel()"
+            class="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
+          >
+            Cancel
+          </button>
 
-        <p class="text-xs text-gray-400 mt-1">
-          Separate multiple course IDs with commas
-        </p>
-      </div>
+          <button
+            type="submit"
+            [disabled]="editForm.invalid"
+            class="px-5 py-2 rounded-lg bg-black text-white hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Save Changes
+          </button>
+        </div>
 
-      <!-- Buttons -->
-      <div class="flex justify-between pt-4">
-
-        <button
-          type="button"
-          (click)="cancel()"
-          class="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
-        >
-          Cancel
-        </button>
-
-        <a [routerLink]="['/students']">
-        <button
-          type="submit"
-          class="px-5 py-2 rounded-lg bg-black text-white hover:bg-gray-800 transition"
-        >
-          Save Changes
-        </button>
-        </a>
-      </div>
-
-    </form>
+      </form>
+    </div>
 
   </div>
-
 </div>

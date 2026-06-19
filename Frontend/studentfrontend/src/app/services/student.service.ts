@@ -1,25 +1,45 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Student } from '../models/student';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
-  getStudentById(id: string): Observable<Student> {
-      return this.http.get<Student>(`${this.apiUrl}/${id}`);
-  }
 
   private apiUrl = 'http://localhost:8081/students';
 
+  private refreshSubject = new Subject<void>();
+  refresh$ = this.refreshSubject.asObservable();
+
+
   constructor(private http: HttpClient) {}
 
-  getStudents(id: string): Observable<Student[]> {
-    return this.http.get<Student[]>(this.apiUrl);
+  getStudents(filter: any): Observable<Student[]> {
+  // Appending a timestamp (?t=123456789) prevents the browser from caching the GET response
+  const timestamp = new Date().getTime();
+  return this.http.get<Student[]>(`${this.apiUrl}?_ts=${timestamp}`);
+  }
+  
+  getStudentById(id: string): Observable<Student> {
+    return this.http.get<Student>(`${this.apiUrl}/${id}`);
   }
 
-  updateStudent(id: string, student: any): Observable<any> {
-    return this.http.put(`api/students/${id}`, student);
+  updateStudent(id: string, student: Student): Observable<Student> {
+    return this.http.put<Student>(`${this.apiUrl}/${id}`, student);
   }
+
+  createStudent(student: Student): Observable<Student> {
+  return this.http.post<Student>(this.apiUrl, student);
+  }
+
+  deleteStudent(id: string): Observable<void> {
+  return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  triggerRefresh(): void {
+  this.refreshSubject.next();
+  }
+
 }
