@@ -8,6 +8,10 @@ The student list is saved in a Mongo DB and accessed through a Springboot Maven 
 
 ### Add Student
 ![Add Student](AddStudent.png)
+<p align="center">
+  <img src="AddStudent.png" width="45%">
+  <img src="AddStudentError.png" width="45%">
+</p>
 
 ### Edit Student
 ![Edit Student](EditStudent.png)
