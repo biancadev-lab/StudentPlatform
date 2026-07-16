@@ -7,11 +7,16 @@ The student list is saved in a Mongo DB and accessed through a Springboot Maven 
 ![Homepage](Homepage.png)
 
 ### Add Student
-![Add Student](AddStudent.png)
+New students can be added via a form, which also implements error messages.
 <p align="center">
   <img src="AddStudent.png" width="45%">
   <img src="AddStudentError.png" width="45%">
 </p>
 
 ### Edit Student
-![Edit Student](EditStudent.png)
+Students can also be edited via a form, which implements error messages as well.
+<p align="center">
+  <img src="EditStudent.png" width="45%">
+  <img src="EditStudentError.png" width="45%">
+</p>
+
