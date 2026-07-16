@@ -4,10 +4,10 @@ The student list is saved in a Mongo DB and accessed through a Springboot Maven 
 ## Screenshots
 
 ### Homepage
-![Homepage](/homepage.png)
+![Homepage](Homepage.png)
 
 ### Add Student
-![Add Student](\public\AddStudent.png)
+![Add Student](AddStudent.png)
 
 ### Edit Student
-![Edit Student](editstudent.png)
+![Edit Student](EditStudent.png)
