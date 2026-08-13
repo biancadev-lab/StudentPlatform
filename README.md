@@ -1,4 +1,4 @@
-This project focuses on basic HTTP requests: it features a list of students containing names, ages, and course IDs, which can be added to, edited, and deleted from. The data is stored in MongoDB and accessed through a Java Spring Boot backend (Maven), with an Angular frontend built with TypeScript & HTML.
+This project focuses on basic HTTP requests: it features a list of students containing names, ages, and course IDs, which can be added to, edited, and deleted from. The data is stored in MongoDB and accessed through a Java Spring Boot backend (Maven), with an Angular frontend (built with TypeScript & HTML).
 
 ## Screenshots
 
