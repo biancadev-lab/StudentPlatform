@@ -20,9 +20,9 @@ export class StudentsComponent implements OnInit, OnDestroy {
 
   constructor(
     private studentService: StudentService,
-    private router: Router, // Inject the router
-    private cdr: ChangeDetectorRef, // Inject ChangeDetectorRef
-    private zone: NgZone // Inject NgZone
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    private zone: NgZone
 
   ) {}
 
@@ -46,7 +46,6 @@ export class StudentsComponent implements OnInit, OnDestroy {
         this.students = [];
         this.students = [...data];
       
-      // 3. Explicitly tell Angular: "Hey, look at the screen right now!"
       this.cdr.markForCheck();
         this.cdr.detectChanges(); 
     });
@@ -54,12 +53,11 @@ export class StudentsComponent implements OnInit, OnDestroy {
 
   // In students.component.ts
 trackByStudentId(index: number, student: Student): string {
-  return student.id ?? ''; // Tells Angular exactly which DOM element maps to which ID
+  return student.id ?? '';
 }
 
 
   ngOnDestroy(): void {
-    // Clean up subscription to prevent memory leaks
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }
@@ -72,12 +70,10 @@ trackByStudentId(index: number, student: Student): string {
   deleteStudent(id: string | undefined): void {
   if (!id) return;
 
-  // Optional: Add a confirmation dialog so users don't accidentally delete someone
   if (confirm('Are you sure you want to delete this student?')) {
     this.studentService.deleteStudent(id).subscribe({
       next: () => {
         console.log('Student deleted successfully');
-        // Trigger the refresh subject to reload the fresh list of students
         this.studentService.triggerRefresh();
       },
       error: (err) => {

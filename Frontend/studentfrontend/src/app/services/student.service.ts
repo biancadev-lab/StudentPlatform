@@ -17,7 +17,7 @@ export class StudentService {
   constructor(private http: HttpClient) {}
 
   getStudents(filter: any): Observable<Student[]> {
-  // Appending a timestamp (?t=123456789) prevents the browser from caching the GET response
+
   const timestamp = new Date().getTime();
   return this.http.get<Student[]>(`${this.apiUrl}?_ts=${timestamp}`);
   }

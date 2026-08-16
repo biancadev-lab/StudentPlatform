@@ -63,10 +63,8 @@ saveStudent(): void {
 
   this.service.updateStudent(this.student.id, updatedStudent).subscribe({
     next: () => {
-      // 1. Tell the service that data has changed
       this.service.triggerRefresh(); 
       
-      // 2. Use Angular Router to navigate back smoothly without a hard refresh
       this.router.navigate(['/students']);
       this.cdr.detectChanges();
     },

@@ -13,7 +13,7 @@ import { Student } from '../models/student';
 })
 export class AddComponent {
 
-  // Initialize with empty defaults
+  // Initialisierung mit leeren Werten
   student: Student = {
     name: '',
     age: 0,
@@ -28,7 +28,6 @@ export class AddComponent {
   ) {}
 
   saveStudent(): void {
-    // Basic structural validation before sending
     if (!this.student.name.trim()) {
       alert('Please enter a name.');
       return;
@@ -44,10 +43,9 @@ export class AddComponent {
 
     this.service.createStudent(newStudent).subscribe({
       next: () => {
-        // Trigger data reload for active lists
+
         this.service.triggerRefresh(); 
-        
-        // Route back smoothly
+
         this.router.navigate(['/students']);
       },
       error: (err) => {

@@ -21,7 +21,6 @@ public class Student {
     @Min(value = 1, message = "Age must be greater than 0")
     private int age;
 
-    // N-to-M relationship (Student → Courses)
     private List<String> courseIds = new ArrayList<>();
 
     public Student() {}
